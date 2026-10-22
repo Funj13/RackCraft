@@ -300,6 +300,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
     let animationId: number;
     const animate = () => {
       animationId = requestAnimationFrame(animate);
+      if (!container.clientWidth || !container.clientHeight) return;
       controls.update();
       renderer.render(scene, camera);
     };
@@ -310,15 +311,19 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
       if (!containerRef.current || !rendererRef.current || !cameraRef.current) return;
       const w = containerRef.current.clientWidth;
       const h = containerRef.current.clientHeight;
+      if (!w || !h) return;
       cameraRef.current.aspect = w / h;
       cameraRef.current.updateProjectionMatrix();
       rendererRef.current.setSize(w, h);
     };
     window.addEventListener('resize', handleResize);
+    const resizeObserver = new ResizeObserver(handleResize);
+    resizeObserver.observe(container);
 
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', handleResize);
+      resizeObserver.disconnect();
       transformControls.dispose();
       controls.dispose();
       renderer.dispose();
@@ -687,6 +692,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
   // Atalhos de Teclado (M = Mover, P = Pintar, T = Escrever, Setas = Mover Peça)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (!containerRef.current?.clientWidth || !containerRef.current?.clientHeight) return;
       // Ignora se estiver digitando em input ou select
       if (['INPUT', 'SELECT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) {
         return;

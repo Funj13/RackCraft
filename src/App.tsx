@@ -7,6 +7,7 @@ import { SidebarHardware } from './components/SidebarHardware';
 import { SidebarPaint } from './components/SidebarPaint';
 import { exportToGLB, exportPresetJSON, importPresetJSON, exportTexturePNG } from './io/GLBExporter';
 import { buildCompleteRouter } from './generator/RouterBuilder';
+import { EnvironmentEditor } from './components/EnvironmentEditor';
 import {
   Download,
   Upload,
@@ -21,6 +22,20 @@ import {
 } from 'lucide-react';
 
 export function App() {
+  const [category, setCategory] = useState<'network' | 'environment'>('environment');
+  const [networkOpened, setNetworkOpened] = useState(false);
+  return <div className="h-screen flex flex-col overflow-hidden">
+    <nav aria-label="Categorias de modelos" className="flex items-center gap-2 px-4 py-2 bg-slate-900 border-b border-slate-700 text-sm shrink-0">
+      <span className="text-slate-400 mr-3 font-semibold">RackCraft · Biblioteca 3D</span>
+      <button aria-pressed={category === 'network'} onClick={() => { setNetworkOpened(true); setCategory('network'); }} className={`px-4 py-2 rounded-lg ${category === 'network' ? 'bg-sky-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}>Equipamentos de rede</button>
+      <button aria-pressed={category === 'environment'} onClick={() => setCategory('environment')} className={`px-4 py-2 rounded-lg ${category === 'environment' ? 'bg-sky-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}>Ambientes / Casas</button>
+    </nav>
+    <div className="flex-1 min-h-0" hidden={category !== 'environment'}><EnvironmentEditor /></div>
+    <div className="flex-1 min-h-0" hidden={category !== 'network'}>{networkOpened && <RouterEditor />}</div>
+  </div>;
+}
+
+function RouterEditor() {
   // Configuração padrão: Roteador Wi-Fi doméstico / pequeno escritório
   const [config, setConfig] = useState<RouterConfig>({
     name: 'Router_AX3000_Gigabit',
@@ -133,6 +148,8 @@ export function App() {
     try {
       const model = buildCompleteRouter(config, textureManager);
       await exportToGLB(model, `${config.name}.glb`);
+    } catch (error) {
+      alert('Erro ao exportar arquivo GLB: ' + error);
     } finally {
       setIsExporting(false);
     }
@@ -163,7 +180,7 @@ export function App() {
   };
 
   return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden bg-slate-950 text-slate-100 font-sans">
+    <div className="flex flex-col h-full w-full overflow-hidden bg-slate-950 text-slate-100 font-sans">
       <input
         ref={fileInputRef}
         type="file"

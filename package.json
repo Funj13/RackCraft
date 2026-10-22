@@ -6,7 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "verify:room": "node scripts/verify-room.mjs",
+    "verify:house": "node scripts/verify-house.mjs",
+    "verify:furnished": "node scripts/verify-furnished-house.mjs",
+    "verify:circulation": "node scripts/verify-circulation.mjs",
+    "verify:free-layout": "node scripts/verify-free-layout.mjs",
+    "verify:objects": "node scripts/verify-object-editor.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -23,6 +29,7 @@
     "@types/three": "^0.180.0",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.21",
+    "esbuild": "^0.25.12",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.7.2",

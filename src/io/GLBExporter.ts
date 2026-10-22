@@ -16,28 +16,18 @@ export async function exportToGLB(model: THREE.Group, filename: string = 'router
   exportScene.scale.set(0.01, 0.01, 0.01);
   exportScene.updateMatrixWorld(true);
 
-  exporter.parse(
-    exportScene,
-    (gltf) => {
-      const blob = new Blob([gltf as ArrayBuffer], { type: 'model/gltf-binary' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename.endsWith('.glb') ? filename : `${filename}.glb`;
-      link.click();
-      URL.revokeObjectURL(url);
-    },
-    (error) => {
-      console.error('Error exporting GLB:', error);
-      alert('Erro ao exportar arquivo GLB: ' + error);
-    },
-    {
-      binary: true,
-      embedImages: true,
-      onlyVisible: true,
-      includeCustomExtensions: true
-    }
-  );
+  const gltf = await exporter.parseAsync(exportScene, {
+    binary: true,
+    onlyVisible: true,
+    includeCustomExtensions: true
+  });
+  const blob = new Blob([gltf as ArrayBuffer], { type: 'model/gltf-binary' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename.endsWith('.glb') ? filename : `${filename}.glb`;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 export function exportPresetJSON(config: RouterConfig, textureManager: TextureManager, filename: string = 'router-preset.json') {
@@ -72,6 +62,10 @@ export function importPresetJSON(
     try {
       const data = JSON.parse(e.target?.result as string);
       if (!data.config) throw new Error('Formato de preset inválido');
+      if (data.category === 'environment') throw new Error('Carregue este preset na categoria Ambientes / Casas');
+      if (!data.config.chassis || !data.config.ports || !data.config.power || !data.config.antennas || !data.config.frontPanel) {
+        throw new Error('O arquivo não contém uma configuração de equipamento de rede');
+      }
 
       if (data.textureDataUrl) {
         const img = new Image();
