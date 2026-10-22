@@ -180,7 +180,7 @@ export function App() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="font-bold text-sm tracking-wide text-white">Network Hardware Crafter</h1>
+              <h1 className="font-bold text-sm tracking-wide text-white">RackCraft 3D</h1>
               <span className="px-2 py-0.5 text-[10px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full">
                 Unreal Engine 5.4 Ready
               </span>

@@ -1,6 +1,6 @@
-# Network Hardware Crafter (Unreal Engine 5.4 Ready) 🌐🕹️
+# RackCraft (Unreal Engine 5.4 Ready) 🌐🕹️
 
-Uma ferramenta web moderna para **geração procedural de modelos 3D de equipamentos de rede** (roteadores, switches de borda, modems e servidores) e um **sistema de texturização integrado estilo editor de skins do Minecraft e Blockbench**, projetado especialmente para jogos e com exportação nativa em `.glb` para a **Unreal Engine 5.4**.
+Uma ferramenta web moderna para **geração procedural e modelagem de modelos 3D de equipamentos de rede** (roteadores, switches de borda, modems e servidores de rack) e um **sistema de texturização integrado estilo editor de skins**, projetado especialmente para jogos, simulação e com exportação nativa em escala 1:1 métrica (`.glb`) para a **Unreal Engine 5.4** e **Blender**.
 
 ---
 
