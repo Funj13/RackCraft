@@ -27,3 +27,4 @@ dist-ssr
 tsconfig.tsbuildinfo
 .agents
 chat_export
+*.zip
